@@ -1,26 +1,35 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* Stone Palette */
+  --color-stone-50: #FAF9F7;
+  --color-stone-100: #F0EEEA;
+  --color-stone-200: #D8D4CC;
+  --color-stone-400: #9C9585;
+  --color-stone-600: #6B6358;
+  --color-stone-800: #3D3731;
+  --color-stone-950: #1C1916;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Accent Colors */
+  --color-blueprint: #2B4C7E;
+  --color-blueprint-light: #4A7AB5;
+  --color-brass: #B8860B;
+  --color-brass-light: #D4A843;
+  --color-parchment: #F5F0E8;
+
+  /* Semantic Colors */
+  --color-success: #4A7C59;
+  --color-caution: #C4852D;
+  --color-tension: #8B3A3A;
+
+  /* Typography */
+  --font-display: 'EB Garamond', serif;
+  --font-body: 'Libre Franklin', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-stone-50);
+  color: var(--color-stone-950);
+  font-family: var(--font-body);
 }
