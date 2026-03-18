@@ -64,8 +64,8 @@ export async function POST(request: Request) {
 
       await updateConversationLastActive(conversationId);
 
-      // Classify feedback asynchronously
-      triggerFeedbackClassification({
+      // Classify feedback (awaited so it completes before function terminates)
+      await triggerFeedbackClassification({
         conversationId,
         sessionId: conversation.sessionId,
         participantId: conversation.participantId,

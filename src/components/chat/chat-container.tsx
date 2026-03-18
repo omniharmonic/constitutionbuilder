@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { MessageList } from "./message-list";
 import { InputBar } from "./input-bar";
 
@@ -28,9 +28,29 @@ export function ChatContainer({
   const [isStreaming, setIsStreaming] = useState(false);
   const [isCompleted, setIsCompleted] = useState(conversationStatus === "completed");
 
+  const hasTriggeredWelcome = useRef(false);
+
   useEffect(() => {
     setMessages(initialMessages);
   }, [initialMessages]);
+
+  // Auto-trigger welcome message for new conversations
+  useEffect(() => {
+    if (
+      initialMessages.length === 0 &&
+      !isCompleted &&
+      !hasTriggeredWelcome.current &&
+      conversationId
+    ) {
+      hasTriggeredWelcome.current = true;
+      // Small delay to let the UI render first
+      const timer = setTimeout(() => {
+        sendMessage("Hello! I'm ready to start.");
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [conversationId, initialMessages.length, isCompleted]);
 
   const sendMessage = useCallback(
     async (content: string) => {

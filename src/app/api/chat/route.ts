@@ -90,8 +90,8 @@ export async function POST(request: Request) {
       // Update last active timestamp
       await updateConversationLastActive(conversationId);
 
-      // Trigger tagging pipeline asynchronously (fire-and-forget)
-      triggerTagging({
+      // Trigger tagging pipeline (awaited so it completes before function terminates)
+      await triggerTagging({
         conversationId,
         sessionId: conversation.sessionId,
         participantId: conversation.participantId,
