@@ -1,0 +1,16 @@
+{
+  "functions": {
+    "src/app/api/chat/route.ts": {
+      "maxDuration": 120
+    },
+    "src/app/api/draft/generate/route.ts": {
+      "maxDuration": 300
+    },
+    "src/app/api/synthesis/route.ts": {
+      "maxDuration": 300
+    },
+    "src/app/api/feedback/route.ts": {
+      "maxDuration": 120
+    }
+  }
+}
