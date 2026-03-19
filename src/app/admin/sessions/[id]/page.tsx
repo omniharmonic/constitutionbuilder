@@ -40,6 +40,9 @@ export default function SessionDetailPage() {
   const [deleting, setDeleting] = useState(false);
   const [inviteEmails, setInviteEmails] = useState("");
   const [inviting, setInviting] = useState(false);
+  const [distributing, setDistributing] = useState(false);
+  const [distributeResult, setDistributeResult] = useState<string | null>(null);
+  const [finalizing, setFinalizing] = useState(false);
   const [inviteResult, setInviteResult] = useState<string | null>(null);
   const [coverage, setCoverage] = useState<unknown[]>([]);
   const [participants, setParticipants] = useState<unknown[]>([]);
@@ -70,7 +73,9 @@ export default function SessionDetailPage() {
   if (loading) return <div className="text-center py-12 text-stone-400">Loading session...</div>;
   if (!session) return <div className="text-center py-12 text-stone-400">Session not found</div>;
 
-  const participantUrl = `${typeof window !== "undefined" ? window.location.origin : ""}/s/${session.slug}`;
+  const origin = typeof window !== "undefined" ? window.location.origin : "";
+  const participantUrl = `${origin}/s/${session.slug}`;
+  const feedbackUrl = `${origin}/s/${session.slug}/feedback`;
 
   return (
     <div className="space-y-6">
@@ -102,10 +107,112 @@ export default function SessionDetailPage() {
         </div>
       </div>
 
+      {/* Phase Action Card */}
+      {session.phase === "drafting" && (
+        <Card className="border-brass/30 bg-parchment/30">
+          <CardHeader>
+            <CardTitle>Draft Ready — Distribute for Feedback</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-sm text-stone-600">
+              Your constitution draft has been generated. Distribute it to participants so they can review and provide feedback.
+              This will create feedback conversations for all active participants and transition the session to the feedback phase.
+            </p>
+            <div className="flex items-center gap-2">
+              <code className="flex-1 text-sm bg-stone-100 px-3 py-2 rounded-lg font-mono text-stone-800 overflow-x-auto">
+                {feedbackUrl}
+              </code>
+              <Button variant="secondary" size="sm" onClick={() => navigator.clipboard.writeText(feedbackUrl)}>
+                Copy
+              </Button>
+            </div>
+            {distributeResult && (
+              <div className="p-3 rounded-lg bg-success/10 text-success text-sm">{distributeResult}</div>
+            )}
+            <Button
+              onClick={async () => {
+                setDistributing(true);
+                setDistributeResult(null);
+                try {
+                  const res = await fetch(`/api/feedback/distribute`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ sessionId: session.id }),
+                  });
+                  const data = await res.json();
+                  if (res.ok) {
+                    setDistributeResult(
+                      `Distributed! ${data.feedbackConversationsCreated} feedback conversation(s) created.${data.emailResults?.length > 0 ? ` ${data.emailResults.filter((r: {status:string}) => r.status === "sent").length} email(s) sent.` : " Share the feedback link above with participants."}`
+                    );
+                    // Reload session to reflect phase change
+                    const updated = await fetch(`/api/sessions/${params.id}`).then(r => r.json());
+                    setSession(updated.session);
+                  } else {
+                    setDistributeResult(data.error || "Distribution failed");
+                  }
+                } catch {
+                  setDistributeResult("Something went wrong");
+                } finally {
+                  setDistributing(false);
+                }
+              }}
+              disabled={distributing}
+            >
+              {distributing ? "Distributing..." : "Distribute Draft for Feedback"}
+            </Button>
+          </CardContent>
+        </Card>
+      )}
+
+      {session.phase === "feedback" && (
+        <Card className="border-blueprint/30 bg-blueprint/5">
+          <CardHeader>
+            <CardTitle>Feedback Phase Active</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-sm text-stone-600">
+              Participants can review the draft and provide feedback. Share this link with them:
+            </p>
+            <div className="flex items-center gap-2">
+              <code className="flex-1 text-sm bg-stone-100 px-3 py-2 rounded-lg font-mono text-stone-800 overflow-x-auto">
+                {feedbackUrl}
+              </code>
+              <Button variant="secondary" size="sm" onClick={() => navigator.clipboard.writeText(feedbackUrl)}>
+                Copy
+              </Button>
+            </div>
+            <div className="flex gap-2 flex-wrap">
+              <a href={`/admin/sessions/${params.id}/feedback`}>
+                <Button variant="secondary" size="sm">View Feedback</Button>
+              </a>
+              <a href={`/admin/sessions/${params.id}/draft`}>
+                <Button variant="secondary" size="sm">View Draft</Button>
+              </a>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {session.phase === "finalized" && (
+        <Card className="border-success/30 bg-success/5">
+          <CardHeader>
+            <CardTitle>Constitution Finalized</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <p className="text-sm text-stone-600">
+              This constitution has been finalized and is read-only.
+            </p>
+            <a href={`/api/export?sessionId=${session.id}`}>
+              <Button variant="secondary" size="sm">Download Constitution</Button>
+            </a>
+          </CardContent>
+        </Card>
+      )}
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
-            <CardTitle>Participant Link</CardTitle>
+            <CardTitle>{session.phase === "survey" ? "Participant Link" : "Survey Link"}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex items-center gap-2">
@@ -116,6 +223,9 @@ export default function SessionDetailPage() {
                 Copy
               </Button>
             </div>
+            {session.phase !== "survey" && (
+              <p className="text-xs text-stone-400 mt-2">Survey is closed. This link is for reference only.</p>
+            )}
           </CardContent>
         </Card>
 

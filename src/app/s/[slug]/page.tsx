@@ -105,10 +105,28 @@ export default function SessionEntryPage() {
           <CardContent className="py-12">
             <Logo size="lg" className="mx-auto mb-4" />
             <h1 className="text-2xl font-display font-bold text-stone-950">{session.name}</h1>
-            <p className="text-stone-600 mt-2">
-              This session is currently in the <strong>{session.phase}</strong> phase
-              and is not accepting new participants.
-            </p>
+            {session.phase === "feedback" ? (
+              <>
+                <p className="text-stone-600 mt-2">
+                  The draft constitution is ready for your review.
+                </p>
+                <a
+                  href={`/s/${slug}/feedback`}
+                  className="mt-4 inline-block px-6 py-3 bg-blueprint text-white rounded-lg font-medium hover:bg-blueprint-light transition-colors"
+                >
+                  Review the Draft
+                </a>
+              </>
+            ) : session.phase === "finalized" ? (
+              <p className="text-stone-600 mt-2">
+                This constitution has been finalized. Thank you for your contribution.
+              </p>
+            ) : (
+              <p className="text-stone-600 mt-2">
+                This session is currently in the <strong>{session.phase}</strong> phase
+                and is not accepting new participants at this time.
+              </p>
+            )}
           </CardContent>
         </Card>
       </main>
