@@ -171,12 +171,12 @@ export default function DraftPage() {
       {/* Draft viewer */}
       {session.constitutionDraft ? (
         <Card>
-          <CardContent className="py-8 px-8 max-w-none">
-            <div className="prose prose-stone max-w-none font-body prose-headings:font-display prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl prose-blockquote:border-brass prose-blockquote:text-stone-600 prose-blockquote:bg-parchment prose-blockquote:py-2 prose-blockquote:px-4 prose-blockquote:rounded-r-lg">
+          <CardContent className="py-6 px-4 sm:py-10 sm:px-10 max-w-none">
+            <article className="prose prose-stone max-w-none prose-headings:font-display prose-h1:text-2xl prose-h1:sm:text-3xl prose-h1:border-b prose-h1:border-stone-200 prose-h1:pb-4 prose-h1:mb-8 prose-h2:text-xl prose-h2:sm:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h2:text-stone-800 prose-h3:text-lg prose-h3:sm:text-xl prose-h3:mt-8 prose-h3:mb-3 prose-h4:text-base prose-h4:mt-6 prose-h4:mb-2 prose-p:leading-relaxed prose-p:text-stone-700 prose-li:text-stone-700 prose-strong:text-stone-900 prose-blockquote:border-l-brass prose-blockquote:bg-parchment prose-blockquote:text-stone-600 prose-blockquote:py-3 prose-blockquote:px-4 prose-blockquote:rounded-r-lg prose-blockquote:not-italic prose-hr:border-stone-200 prose-hr:my-8">
               <ReactMarkdown remarkPlugins={[remarkGfm]}>
                 {session.constitutionDraft.replace(/^---[\s\S]*?---\n/, '')}
               </ReactMarkdown>
-            </div>
+            </article>
           </CardContent>
         </Card>
       ) : !generating ? (
