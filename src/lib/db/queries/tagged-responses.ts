@@ -1,6 +1,6 @@
 import { db } from '@/lib/db/client';
 import { taggedResponses, conversations } from '@/lib/db/schema';
-import { eq, and, sql } from 'drizzle-orm';
+import { eq, and, like, sql } from 'drizzle-orm';
 import type { ConversationAgentState } from '@/lib/db/schema';
 
 export async function insertTaggedResponses(
@@ -27,7 +27,12 @@ export async function getTaggedResponsesBySession(
   const conditions = [eq(taggedResponses.sessionId, sessionId)];
 
   if (filters?.component) {
-    conditions.push(eq(taggedResponses.component, filters.component));
+    // Support both exact match (e.g. "identity.vision") and prefix match (e.g. "identity")
+    if (filters.component.includes('.')) {
+      conditions.push(eq(taggedResponses.component, filters.component));
+    } else {
+      conditions.push(like(taggedResponses.component, `${filters.component}.%`));
+    }
   }
   if (filters?.participantId) {
     conditions.push(eq(taggedResponses.participantId, filters.participantId));
