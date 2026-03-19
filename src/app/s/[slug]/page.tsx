@@ -98,6 +98,80 @@ export default function SessionEntryPage() {
     );
   }
 
+  if (session && session.phase === "feedback") {
+    // Feedback phase: show re-authentication form so participants can get
+    // a fresh cookie and access the feedback chat
+    return (
+      <main className="flex-1 flex items-center justify-center px-4 py-12">
+        <Card className="w-full max-w-md">
+          <CardHeader className="items-center text-center">
+            <Logo size="lg" />
+            <CardTitle className="text-2xl mt-4">{session.name}</CardTitle>
+            <CardDescription>
+              The draft constitution is ready for your review. Enter your details to continue.
+            </CardDescription>
+          </CardHeader>
+          <form onSubmit={async (e) => {
+            e.preventDefault();
+            setError("");
+            setJoining(true);
+            try {
+              const res = await fetch(`/api/sessions/${session.id}/participants`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ displayName, email: email || undefined }),
+              });
+              const data = await res.json();
+              if (!res.ok) {
+                setError(data.error || "Could not find your participant record");
+                return;
+              }
+              router.push(`/s/${slug}/feedback`);
+            } catch {
+              setError("Something went wrong. Please try again.");
+            } finally {
+              setJoining(false);
+            }
+          }}>
+            <CardContent className="space-y-4">
+              {error && (
+                <div className="p-3 rounded-lg bg-tension/10 text-tension text-sm">{error}</div>
+              )}
+              <div className="space-y-2">
+                <Label htmlFor="displayName">Your Name *</Label>
+                <Input
+                  id="displayName"
+                  value={displayName}
+                  onChange={(e) => setDisplayName(e.target.value)}
+                  placeholder="How should we address you?"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="The email you used before"
+                />
+                <p className="text-xs text-stone-400">
+                  Enter the same email you used during the survey to access your feedback session
+                </p>
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button type="submit" className="w-full" disabled={joining}>
+                {joining ? "Loading..." : "Review the Draft"}
+              </Button>
+            </CardFooter>
+          </form>
+        </Card>
+      </main>
+    );
+  }
+
   if (session && session.phase !== "survey") {
     return (
       <main className="flex-1 flex items-center justify-center px-4">
@@ -105,19 +179,7 @@ export default function SessionEntryPage() {
           <CardContent className="py-12">
             <Logo size="lg" className="mx-auto mb-4" />
             <h1 className="text-2xl font-display font-bold text-stone-950">{session.name}</h1>
-            {session.phase === "feedback" ? (
-              <>
-                <p className="text-stone-600 mt-2">
-                  The draft constitution is ready for your review.
-                </p>
-                <a
-                  href={`/s/${slug}/feedback`}
-                  className="mt-4 inline-block px-6 py-3 bg-blueprint text-white rounded-lg font-medium hover:bg-blueprint-light transition-colors"
-                >
-                  Review the Draft
-                </a>
-              </>
-            ) : session.phase === "finalized" ? (
+            {session.phase === "finalized" ? (
               <p className="text-stone-600 mt-2">
                 This constitution has been finalized. Thank you for your contribution.
               </p>

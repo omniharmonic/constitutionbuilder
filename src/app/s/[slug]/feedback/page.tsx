@@ -42,8 +42,8 @@ export default function FeedbackPage() {
         // We need the participant's feedback conversation
         const chatSessionRes = await fetch("/api/chat/session");
         if (!chatSessionRes.ok) {
-          setError("Please join the session first.");
-          setLoading(false);
+          // No participant cookie — redirect to entry page to re-authenticate
+          window.location.href = `/s/${slug}`;
           return;
         }
         const chatSession = await chatSessionRes.json();

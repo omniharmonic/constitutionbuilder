@@ -64,7 +64,9 @@ export async function POST(
     return NextResponse.json({ error: 'Session not found' }, { status: 404 });
   }
 
-  if (session.phase !== 'survey') {
+  // Allow joining during survey phase (new participants)
+  // Allow re-authentication during feedback phase (returning participants only)
+  if (session.phase !== 'survey' && session.phase !== 'feedback') {
     return NextResponse.json(
       { error: `This session is currently in the ${session.phase} phase` },
       { status: 400 }
