@@ -38,6 +38,166 @@ When ready, the admin finalizes the constitution — locking the document and di
 
 ---
 
+## The Constitution Framework
+
+Constitution Builder is built on the **OpenCivics Solidarity Network Constitution** template — a governance framework designed for networks, cooperatives, DAOs, community organizations, and any group that needs to articulate how it governs itself. The framework has three sections, each answering a different foundational question.
+
+### Section 1: Identity — "Who are we?"
+
+Identity defines the group's reason for being, its beliefs, and its commitments. It contains seven components, ordered by the recommended development sequence:
+
+| Component | What It Defines | Key Question | Litmus Test |
+|-----------|----------------|--------------|-------------|
+| **Vision** | The world the group seeks to help create | "If you were wildly successful in 20 years, what would the world look like?" | If this came true, the organization might no longer be needed |
+| **Purpose** | Why the group exists — existential, not functional | "If all your activities disappeared but the *reason* still existed, what would that reason be?" | Remains true even if the organization's form evolves completely |
+| **Mission** | What the group does to fulfill its purpose | "What are the core activities that most directly serve your purpose?" | Specific enough to guide decisions, broad enough to evolve |
+| **Worldview** | Fundamental assumptions about how the world works | "How do you think meaningful change happens?" | Guides the group's approach even when no one is explicitly thinking about it |
+| **Mandates** | Non-negotiable obligations and ethical boundaries | "What would your group *never* do, even if it seemed to help the mission?" | Would be upheld even in the most difficult circumstances |
+| **Values** | What the group stands for, split into two domains | "How do members treat each other?" and "What ethical principles guide your system design?" | If violated, the group would feel out of integrity even if the mission succeeded |
+| **Pledge** | Mutual commitments between members and organization | "What do members promise when they join?" and "What does the group owe its members?" | Remains true even as the organization evolves |
+
+**Critical design notes:**
+
+- **Purpose ≠ Mission.** Purpose is *why* (existential, timeless). Mission is *what* (functional, present). Most people conflate these. The conversation agent is specifically trained to gently separate them through dialogue, not correction.
+
+- **Values has two sub-domains** that most groups have never distinguished: **Personal Ethics** (how members treat each other — interpersonal behavior, conflict handling, accountability) and **System Design Ethics** (what ethical principles guide the design of systems, processes, and interventions). This distinction is one of the most intellectually productive parts of the template.
+
+- **Mandates are not values.** Values are aspirational; mandates are binding. "We value transparency" is a value. "We will never share personal information about people we serve" is a mandate. The agent probes for both.
+
+### Section 2: Structure — "How are we organized?"
+
+Structure defines the organizational architecture — who does what, how the group is subdivided, and what resources it stewards.
+
+| Component | What It Defines | Why It Matters |
+|-----------|----------------|----------------|
+| **Roles** | Defined positions with specific permissions, responsibilities, criteria, and member types (Leadership / Council / Core / Network) | Most groups have informal roles but haven't articulated what each role can and can't do. Making this explicit prevents power concentration and confusion. |
+| **Membranes** | Organizational units or "circles" with defined boundaries, functions, and decision-making authority | Borrowed from living systems theory. Most groups organize into teams but haven't defined the *boundaries* between them — what each team controls, how teams coordinate, and what requires cross-team approval. |
+| **Assets** | Resources the organization stewards — financial, informational, intellectual property, and physical | Groups often forget to govern their collective resources until a conflict arises. Defining stewardship, access, and disposal policies prevents resource conflicts. |
+
+**Scaffolding strategy:** Most participants think naturally about Roles ("who does what"). Few think in terms of Membranes or Assets without prompting. The conversation agent scaffolds from concrete (Roles) to abstract (Membranes, Assets), introducing the membrane concept through analogy: "Think of it like different organs in a body — each has a specific function and defined relationships with others."
+
+### Section 3: Protocols — "How do we operate?"
+
+Protocols are the processes that make governance real. Identity says *who you are*, Structure says *how you're organized*, and Protocols say *what happens when*.
+
+| Category | Examples | How the Agent Surfaces Them |
+|----------|---------|---------------------------|
+| **Role Protocols** | Adding/removing roles, elections, transitions, succession | "A new person wants to take on a leadership role. How does that work?" |
+| **Membrane Protocols** | Decision-making, conflict resolution, communication, meetings | "Two members fundamentally disagree about a budget allocation. Walk me through what happens." |
+| **Asset Protocols** | Budget management, resource allocation, information security | "How are spending decisions made? Who has authority over what?" |
+
+**Key insight:** The agent uses **scenario-based elicitation**, not definitions. "Describe your conflict resolution protocol" produces abstract, aspirational answers. "Walk me through what happens when two members disagree about money" produces concrete, honest answers that reveal how the group *actually* operates — which is what a constitution needs to capture.
+
+### How Tagging Maps to the Framework
+
+Every substantive response from a participant is tagged into a hierarchical taxonomy that mirrors the constitution structure. A single participant statement can produce multiple tags — for example, a story about a budget conflict might simultaneously tag to:
+
+- `identity.values.personal_ethics.conflict` (how the members treated each other)
+- `protocols.membrane_protocols.conflict_resolution` (the process they followed)
+- `identity.mandates.ethical_boundaries` (a boundary that was tested)
+- `structure.assets` (the resource in question)
+
+The full taxonomy has 50+ tags across three levels:
+
+```
+identity.vision
+  identity.vision.success_indicators
+  identity.vision.beneficiaries
+  identity.vision.transformed_systems
+
+identity.purpose
+  identity.purpose.core_reason
+  identity.purpose.unique_role
+  identity.purpose.what_draws_people
+
+identity.mission
+  identity.mission.core_activities
+  identity.mission.essential_functions
+  identity.mission.missing_activities
+
+identity.worldview
+  identity.worldview.theory_of_change
+  identity.worldview.human_nature
+  identity.worldview.power_authority
+  identity.worldview.paradigm_shift
+
+identity.mandates
+  identity.mandates.obligations_to_members
+  identity.mandates.obligations_to_communities
+  identity.mandates.ethical_boundaries
+  identity.mandates.non_negotiables
+
+identity.values
+  identity.values.personal_ethics
+    identity.values.personal_ethics.interpersonal
+    identity.values.personal_ethics.conflict
+    identity.values.personal_ethics.accountability
+  identity.values.system_design_ethics
+    identity.values.system_design_ethics.principles
+    identity.values.system_design_ethics.outcomes_sought
+    identity.values.system_design_ethics.outcomes_avoided
+  identity.values.core_values_ranked
+
+identity.pledge
+  identity.pledge.member_commitments
+  identity.pledge.org_commitments
+  identity.pledge.accountability_mechanisms
+
+structure.roles          (permissions, responsibilities, criteria, member_type)
+structure.membranes      (functions, roles, decision_authority, relationships)
+structure.assets         (type, stewardship, access_control)
+
+protocols.role_protocols       (add_role, remove_role, election, transition)
+protocols.membrane_protocols   (decision_making, conflict_resolution, communication, meetings)
+protocols.asset_protocols      (budget, resource_allocation, information_security)
+```
+
+Each tagged response includes:
+
+- **Tag**: The most specific applicable taxonomy node
+- **Content**: The extracted insight, summarized in the participant's own language (1-3 sentences)
+- **Confidence**: 1.0 for explicit statements, 0.7 for clearly implied, 0.4 for inferred from context
+- **Component**: The top-level component (e.g., `identity.vision`) for coverage calculation
+
+### How the Agent Navigates the Framework
+
+The conversation agent doesn't march through components in order. It follows a **hybrid approach**: organic conversation flow guided by internal awareness of which components remain uncovered.
+
+The recommended arc moves through five phases:
+
+1. **Opening** — Warm introduction, establish rapport, invite a personal story about the group
+2. **Identity** — Vision → Purpose → Mission → Worldview → Values → Mandates → Pledge (but follows participant energy; if they're passionate about values, go deep there)
+3. **Structure** — Roles → Membranes → Assets (scaffolding from concrete to abstract)
+4. **Protocols** — Scenarios drawn from the participant's own stories in earlier phases
+5. **Closing** — Reflect back key themes, ask what was missed, thank the participant
+
+When the participant says something that naturally bridges to an uncovered component, the agent follows that thread. When conversation on a topic reaches a natural pause, the agent gently steers toward uncovered territory. It never announces transitions ("Now let's talk about Structure") — it finds organic connections.
+
+The agent is also specifically tuned to surface **hidden insights** that wouldn't emerge in a survey:
+
+- Competing worldview assumptions within the group
+- Implicit power structures ("When a big decision needs to be made quickly, who *actually* makes it?")
+- Unspoken membership boundaries
+- Values-behavior gaps ("You said X is important. Can you think of a time the group didn't live up to that?")
+- Protocol vacuums ("Has there been a situation where nobody knew what the process was?")
+- Succession anxiety ("What happens if [key person] leaves? What breaks?")
+
+### From Tags to Constitution
+
+Draft generation works component by component. For each component:
+
+1. All tagged responses for that component are gathered from all participants
+2. The drafter receives these as numbered, attributed insights with confidence scores
+3. It synthesizes them into constitutional language following specific rules:
+   - **Consensus** (multiple participants agree) → confident authoritative statement
+   - **Tension** (participants disagree) → explicitly surfaced with bridging language and an editorial note
+   - **Thin data** (1-2 responses) → included but flagged as needing more input
+   - **No data** → placeholder noting the gap
+
+The result is a constitution that reads as a governance document — not as a survey summary — while remaining fully grounded in what participants actually said.
+
+---
+
 ## Architecture
 
 ### Tech Stack
