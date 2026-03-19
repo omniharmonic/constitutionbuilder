@@ -20,6 +20,8 @@ interface SessionDetail {
     activeComponents?: string[];
     requireEmail?: boolean;
   };
+  constitutionDraft: string | null;
+  constitutionVersion: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -125,93 +127,120 @@ export default function SessionDetailPage() {
         </div>
       </div>
 
-      {/* Phase Action Card */}
-      {session.phase === "drafting" && (
+      {/* Process Controls — always visible, state-aware */}
+      {session.phase !== "finalized" ? (
         <Card className="border-brass/30 bg-parchment/30">
           <CardHeader>
-            <CardTitle>Draft Ready — Distribute for Feedback</CardTitle>
+            <CardTitle>Process Controls</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
+            {/* Current phase indicator */}
             <p className="text-sm text-stone-600">
-              Your constitution draft has been generated. Distribute it to participants so they can review and provide feedback.
-              This will create feedback conversations for all active participants and transition the session to the feedback phase.
+              {session.phase === "survey" && "Survey is open. Participants can join and contribute."}
+              {session.phase === "drafting" && "Draft has been generated. Ready to distribute for feedback."}
+              {session.phase === "feedback" && "Feedback phase is active. Participants are reviewing the draft."}
+              {session.phase === "synthesis" && "Synthesis is in progress."}
             </p>
-            <div className="flex items-center gap-2">
-              <code className="flex-1 text-sm bg-stone-100 px-3 py-2 rounded-lg font-mono text-stone-800 overflow-x-auto">
-                {feedbackUrl}
-              </code>
-              <Button variant="secondary" size="sm" onClick={() => navigator.clipboard.writeText(feedbackUrl)}>
-                Copy
-              </Button>
-            </div>
+
+            {/* Feedback link — show whenever a draft exists */}
+            {session.constitutionDraft && (
+              <div>
+                <p className="text-xs text-stone-400 mb-1.5">Feedback link (share with participants)</p>
+                <div className="flex items-center gap-2">
+                  <code className="flex-1 text-sm bg-stone-100 px-3 py-2 rounded-lg font-mono text-stone-800 overflow-x-auto">
+                    {feedbackUrl}
+                  </code>
+                  <Button variant="secondary" size="sm" onClick={() => navigator.clipboard.writeText(feedbackUrl)}>
+                    Copy
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {/* Action result message */}
             {distributeResult && (
               <div className="p-3 rounded-lg bg-success/10 text-success text-sm">{distributeResult}</div>
             )}
-            <Button
-              onClick={async () => {
-                setDistributing(true);
-                setDistributeResult(null);
-                try {
-                  const res = await fetch(`/api/feedback/distribute`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ sessionId: session.id }),
-                  });
-                  const data = await res.json();
-                  if (res.ok) {
-                    setDistributeResult(
-                      `Distributed! ${data.feedbackConversationsCreated} feedback conversation(s) created.${data.emailResults?.length > 0 ? ` ${data.emailResults.filter((r: {status:string}) => r.status === "sent").length} email(s) sent.` : " Share the feedback link above with participants."}`
-                    );
-                    // Reload session to reflect phase change
-                    const updated = await fetch(`/api/sessions/${params.id}`).then(r => r.json());
-                    setSession(updated.session);
-                  } else {
-                    setDistributeResult(data.error || "Distribution failed");
-                  }
-                } catch {
-                  setDistributeResult("Something went wrong");
-                } finally {
-                  setDistributing(false);
-                }
-              }}
-              disabled={distributing}
-            >
-              {distributing ? "Distributing..." : "Distribute Draft for Feedback"}
-            </Button>
-          </CardContent>
-        </Card>
-      )}
 
-      {session.phase === "feedback" && (
-        <Card className="border-blueprint/30 bg-blueprint/5">
-          <CardHeader>
-            <CardTitle>Feedback Phase Active</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <p className="text-sm text-stone-600">
-              Participants can review the draft and provide feedback. Share this link with them:
-            </p>
-            <div className="flex items-center gap-2">
-              <code className="flex-1 text-sm bg-stone-100 px-3 py-2 rounded-lg font-mono text-stone-800 overflow-x-auto">
-                {feedbackUrl}
-              </code>
-              <Button variant="secondary" size="sm" onClick={() => navigator.clipboard.writeText(feedbackUrl)}>
-                Copy
-              </Button>
-            </div>
+            {/* Action buttons — all available actions for current state */}
             <div className="flex gap-2 flex-wrap">
-              <a href={`/admin/sessions/${params.id}/feedback`}>
-                <Button variant="secondary" size="sm">View Feedback</Button>
-              </a>
+              {/* Generate / Regenerate Draft — available whenever there are responses */}
               <a href={`/admin/sessions/${params.id}/draft`}>
-                <Button variant="secondary" size="sm">View Draft</Button>
+                <Button variant="secondary" size="sm">
+                  {session.constitutionDraft ? "View / Regenerate Draft" : "Generate Draft"}
+                </Button>
               </a>
+
+              {/* Distribute for Feedback — available when draft exists */}
+              {session.constitutionDraft && (
+                <Button
+                  size="sm"
+                  onClick={async () => {
+                    if (!confirm("Distribute the draft for feedback? This will create feedback conversations for all active participants and transition to the feedback phase.")) return;
+                    setDistributing(true);
+                    setDistributeResult(null);
+                    try {
+                      const res = await fetch(`/api/feedback/distribute`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ sessionId: session.id }),
+                      });
+                      const data = await res.json();
+                      if (res.ok) {
+                        setDistributeResult(
+                          `Distributed! ${data.feedbackConversationsCreated} feedback conversation(s) created.${data.emailResults?.length > 0 ? ` ${data.emailResults.filter((r: {status:string}) => r.status === "sent").length} email(s) sent.` : " Share the feedback link with participants."}`
+                        );
+                        const updated = await fetch(`/api/sessions/${params.id}`).then(r => r.json());
+                        setSession(updated.session);
+                      } else {
+                        setDistributeResult(data.error || "Distribution failed");
+                      }
+                    } catch {
+                      setDistributeResult("Something went wrong");
+                    } finally {
+                      setDistributing(false);
+                    }
+                  }}
+                  disabled={distributing}
+                >
+                  {distributing ? "Distributing..." : "Distribute for Feedback"}
+                </Button>
+              )}
+
+              {/* Finalize — available when draft exists */}
+              {session.constitutionDraft && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={async () => {
+                    if (!confirm("Finalize this constitution? This is irreversible — the document will be locked and distributed to all participants.")) return;
+                    setFinalizing(true);
+                    try {
+                      const res = await fetch(`/api/sessions/${params.id}/finalize`, { method: "POST" });
+                      if (res.ok) {
+                        const updated = await fetch(`/api/sessions/${params.id}`).then(r => r.json());
+                        setSession(updated.session);
+                      }
+                    } catch {} finally {
+                      setFinalizing(false);
+                    }
+                  }}
+                  disabled={finalizing}
+                >
+                  {finalizing ? "Finalizing..." : "Finalize Constitution"}
+                </Button>
+              )}
+
+              {/* Download — available when draft exists */}
+              {session.constitutionDraft && (
+                <a href={`/api/export?sessionId=${session.id}`}>
+                  <Button variant="ghost" size="sm">Download</Button>
+                </a>
+              )}
             </div>
           </CardContent>
         </Card>
-      )}
-
-      {session.phase === "finalized" && (
+      ) : (
         <Card className="border-success/30 bg-success/5">
           <CardHeader>
             <CardTitle>Constitution Finalized</CardTitle>
