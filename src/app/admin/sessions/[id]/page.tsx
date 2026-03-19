@@ -101,6 +101,24 @@ export default function SessionDetailPage() {
           <a href={`/admin/sessions/${params.id}/feedback`}>
             <Button variant="secondary" size="sm">Feedback</Button>
           </a>
+          {(session.phase === "drafting" || session.phase === "feedback" || session.phase === "synthesis") && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={async () => {
+                if (!confirm("Re-open survey? Participants will be able to join and contribute again. All existing data (draft, feedback, responses) will be preserved.")) return;
+                try {
+                  const res = await fetch(`/api/sessions/${params.id}/reopen-survey`, { method: "POST" });
+                  if (res.ok) {
+                    const updated = await fetch(`/api/sessions/${params.id}`).then(r => r.json());
+                    setSession(updated.session);
+                  }
+                } catch {}
+              }}
+            >
+              Re-open Survey
+            </Button>
+          )}
           <Button variant="danger" size="sm" onClick={handleDelete} disabled={deleting}>
             {deleting ? "Deleting..." : "Delete"}
           </Button>
