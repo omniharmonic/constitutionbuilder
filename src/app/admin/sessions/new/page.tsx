@@ -116,7 +116,7 @@ export default function NewSessionPage() {
 
             <div className="space-y-3">
               <Label>Active Constitution Components</Label>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {CONSTITUTION_COMPONENTS.map((component) => (
                   <label
                     key={component.id}

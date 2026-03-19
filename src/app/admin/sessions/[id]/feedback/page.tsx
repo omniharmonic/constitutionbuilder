@@ -69,10 +69,10 @@ export default function FeedbackDashboardPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-display font-bold text-stone-950">Feedback</h1>
-          <p className="text-stone-600 mt-1">Review participant feedback on the draft</p>
+          <h1 className="text-2xl sm:text-3xl font-display font-bold text-stone-950">Feedback</h1>
+          <p className="text-stone-600 mt-1 text-sm sm:text-base">Review participant feedback on the draft</p>
         </div>
         <a href={`/admin/sessions/${params.id}`}>
           <Button variant="ghost">Back to Session</Button>
@@ -96,14 +96,14 @@ export default function FeedbackDashboardPage() {
               onClick={() => loadDetails(component)}
             >
               <CardContent className="p-4">
-                <div className="flex items-center justify-between">
-                  <h3 className="font-display font-semibold text-stone-800">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <h3 className="font-display font-semibold text-stone-800 text-sm sm:text-base">
                     {component}
                     {hasDisagreements(items) && (
                       <span className="ml-2 text-xs text-tension">needs attention</span>
                     )}
                   </h3>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 flex-wrap">
                     {items.map((item) => (
                       <Badge key={item.feedbackType} variant={typeVariant[item.feedbackType] || "default"}>
                         {item.count} {item.feedbackType}

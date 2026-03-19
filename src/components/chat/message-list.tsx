@@ -46,7 +46,7 @@ export function MessageList({ messages, streamingText, isStreaming }: MessageLis
   return (
     <div
       ref={containerRef}
-      className="flex-1 overflow-y-auto px-4 py-6 space-y-4"
+      className="flex-1 overflow-y-auto px-3 py-4 sm:px-4 sm:py-6 space-y-3 sm:space-y-4"
       style={{
         backgroundImage:
           "repeating-linear-gradient(0deg, transparent, transparent 39px, var(--color-stone-200) 39px, var(--color-stone-200) 40px), repeating-linear-gradient(90deg, transparent, transparent 39px, var(--color-stone-200) 39px, var(--color-stone-200) 40px)",

@@ -82,7 +82,7 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-dvh">
       <header className="border-b border-stone-200 bg-white/80 backdrop-blur-sm px-4 py-3 shrink-0">
         <div className="max-w-2xl mx-auto">
           <LogoWithText size="sm" />

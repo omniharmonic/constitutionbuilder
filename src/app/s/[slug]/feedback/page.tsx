@@ -170,7 +170,7 @@ export default function FeedbackPage() {
   }
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-dvh">
       <header className="border-b border-stone-200 bg-white/80 backdrop-blur-sm px-4 py-3 shrink-0 flex items-center justify-between">
         <LogoWithText size="sm" />
         <button

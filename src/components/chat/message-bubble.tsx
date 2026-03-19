@@ -13,7 +13,7 @@ export function MessageBubble({ role, content, isStreaming }: MessageBubbleProps
     <div className={cn("flex", isUser ? "justify-end" : "justify-start")}>
       <div
         className={cn(
-          "max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed whitespace-pre-wrap",
+          "max-w-[88%] sm:max-w-[80%] rounded-2xl px-3.5 py-2.5 sm:px-4 sm:py-3 text-sm leading-relaxed whitespace-pre-wrap",
           isUser
             ? "bg-stone-100 text-stone-950 rounded-br-md"
             : "bg-parchment text-stone-800 rounded-bl-md"

@@ -36,12 +36,12 @@ export default function AdminDashboard() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-display font-bold text-stone-950">Sessions</h1>
-          <p className="text-stone-600 mt-1">Manage your constitution-building sessions</p>
+          <h1 className="text-2xl sm:text-3xl font-display font-bold text-stone-950">Sessions</h1>
+          <p className="text-stone-600 mt-1 text-sm sm:text-base">Manage your constitution-building sessions</p>
         </div>
-        <Button size="lg" onClick={() => window.location.href = "/admin/sessions/new"}>
+        <Button size="lg" className="w-full sm:w-auto" onClick={() => window.location.href = "/admin/sessions/new"}>
           New Session
         </Button>
       </div>
@@ -60,7 +60,7 @@ export default function AdminDashboard() {
           {sessions.map((session) => (
             <a key={session.id} href={`/admin/sessions/${session.id}`}>
               <Card className="hover:border-blueprint/30 transition-colors cursor-pointer">
-                <CardContent className="p-6 flex items-center justify-between">
+                <CardContent className="p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                   <div className="space-y-1">
                     <div className="flex items-center gap-3">
                       <h2 className="text-lg font-display font-semibold text-stone-950">

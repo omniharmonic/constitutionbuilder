@@ -77,7 +77,7 @@ export function CoverageMap({ coverage }: CoverageMapProps) {
                       style={{ width: `${item.coveragePercent}%` }}
                     />
                   </div>
-                  <div className="flex gap-4 mt-1.5 text-xs text-stone-400">
+                  <div className="flex gap-3 sm:gap-4 mt-1.5 text-xs text-stone-400 flex-wrap">
                     <span>{item.responseCount} responses</span>
                     <span>
                       {item.participantCount}/{item.totalActiveParticipants}{" "}

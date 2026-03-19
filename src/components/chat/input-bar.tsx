@@ -44,8 +44,8 @@ export function InputBar({ onSend, disabled }: InputBarProps) {
   const isNearLimit = value.length > MAX_LENGTH * 0.9;
 
   return (
-    <div className="border-t border-stone-200 bg-white px-4 py-3">
-      <div className="max-w-2xl mx-auto flex gap-3 items-end">
+    <div className="border-t border-stone-200 bg-white px-3 py-2 sm:px-4 sm:py-3">
+      <div className="max-w-2xl mx-auto flex gap-2 sm:gap-3 items-end">
         <textarea
           ref={textareaRef}
           value={value}
@@ -54,7 +54,7 @@ export function InputBar({ onSend, disabled }: InputBarProps) {
           placeholder="Share your thoughts..."
           disabled={disabled}
           rows={1}
-          className="flex-1 resize-none rounded-xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-950 placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-blueprint focus:border-transparent disabled:opacity-50"
+          className="flex-1 resize-none rounded-xl border border-stone-200 bg-stone-50 px-3 py-2.5 sm:px-4 sm:py-3 text-base sm:text-sm text-stone-950 placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-blueprint focus:border-transparent disabled:opacity-50"
         />
         <Button
           onClick={handleSend}

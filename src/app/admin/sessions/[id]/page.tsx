@@ -74,29 +74,29 @@ export default function SessionDetailPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-start justify-between">
+      <div className="space-y-4">
         <div>
-          <div className="flex items-center gap-3">
-            <h1 className="text-3xl font-display font-bold text-stone-950">{session.name}</h1>
+          <div className="flex items-center gap-3 flex-wrap">
+            <h1 className="text-2xl sm:text-3xl font-display font-bold text-stone-950">{session.name}</h1>
             <Badge variant={phaseBadgeVariant[session.phase] || "default"}>
               {session.phase}
             </Badge>
           </div>
           {session.description && (
-            <p className="text-stone-600 mt-2">{session.description}</p>
+            <p className="text-stone-600 mt-2 text-sm sm:text-base">{session.description}</p>
           )}
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-wrap">
           <a href={`/admin/sessions/${params.id}/responses`}>
-            <Button variant="secondary">Responses</Button>
+            <Button variant="secondary" size="sm">Responses</Button>
           </a>
           <a href={`/admin/sessions/${params.id}/draft`}>
-            <Button variant="secondary">Draft</Button>
+            <Button variant="secondary" size="sm">Draft</Button>
           </a>
           <a href={`/admin/sessions/${params.id}/feedback`}>
-            <Button variant="secondary">Feedback</Button>
+            <Button variant="secondary" size="sm">Feedback</Button>
           </a>
-          <Button variant="danger" onClick={handleDelete} disabled={deleting}>
+          <Button variant="danger" size="sm" onClick={handleDelete} disabled={deleting}>
             {deleting ? "Deleting..." : "Delete"}
           </Button>
         </div>

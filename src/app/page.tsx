@@ -36,25 +36,25 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Hero */}
-      <section className="flex-1 flex flex-col items-center justify-center px-4 py-24 text-center bg-gradient-to-b from-stone-50 to-parchment">
-        <Logo size="lg" className="mb-8" />
-        <h1 className="text-5xl md:text-6xl font-display font-bold text-stone-950 tracking-tight max-w-3xl">
+      <section className="flex-1 flex flex-col items-center justify-center px-4 py-16 sm:py-24 text-center bg-gradient-to-b from-stone-50 to-parchment">
+        <Logo size="lg" className="mb-6 sm:mb-8" />
+        <h1 className="text-3xl sm:text-5xl md:text-6xl font-display font-bold text-stone-950 tracking-tight max-w-3xl">
           Constitution Builder
         </h1>
-        <p className="mt-6 text-xl md:text-2xl text-stone-600 font-body leading-relaxed max-w-2xl">
+        <p className="mt-4 sm:mt-6 text-lg sm:text-xl md:text-2xl text-stone-600 font-body leading-relaxed max-w-2xl">
           AI-guided collaborative constitution creation.
           Surface collective intelligence, build governance together.
         </p>
-        <div className="flex gap-4 mt-10">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-8 sm:mt-10 w-full sm:w-auto px-4 sm:px-0">
           <a
             href="/register"
-            className="px-8 py-4 bg-brass text-white rounded-lg font-semibold text-lg hover:bg-brass-light transition-colors shadow-sm"
+            className="px-8 py-4 bg-brass text-white rounded-lg font-semibold text-base sm:text-lg hover:bg-brass-light transition-colors shadow-sm text-center"
           >
             Lay the Foundation
           </a>
           <a
             href="/login"
-            className="px-8 py-4 bg-white text-stone-800 rounded-lg font-medium text-lg border border-stone-200 hover:border-stone-400 transition-colors"
+            className="px-8 py-4 bg-white text-stone-800 rounded-lg font-medium text-base sm:text-lg border border-stone-200 hover:border-stone-400 transition-colors text-center"
           >
             Sign In
           </a>
@@ -62,9 +62,9 @@ export default function Home() {
       </section>
 
       {/* What is this */}
-      <section className="py-20 px-4 bg-white">
+      <section className="py-12 sm:py-20 px-4 bg-white">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl font-display font-bold text-stone-950">
+          <h2 className="text-2xl sm:text-3xl font-display font-bold text-stone-950">
             What is this?
           </h2>
           <p className="mt-6 text-lg text-stone-600 leading-relaxed">
@@ -83,9 +83,9 @@ export default function Home() {
       </section>
 
       {/* How it works */}
-      <section className="py-20 px-4 bg-stone-50">
+      <section className="py-12 sm:py-20 px-4 bg-stone-50">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl font-display font-bold text-stone-950 text-center mb-16">
+          <h2 className="text-2xl sm:text-3xl font-display font-bold text-stone-950 text-center mb-8 sm:mb-16">
             How it works
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
