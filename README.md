@@ -1,6 +1,6 @@
 # Constitution Builder
 
-AI-guided collaborative constitution creation for organizations. Built by [OpenCivics Labs](https://opencivics.org).
+AI-guided collaborative constitution creation for organizations. Built by omniharmonic based on the OpenCivics Solidarity Network Constitution template.
 
 Constitution Builder replaces the multi-week, facilitator-dependent, document-heavy process of writing an organizational constitution with an AI-guided conversational experience. A Claude-powered agent interviews each participant individually, extracts structured governance insights, synthesizes them into a draft constitution, then guides participants through iterative feedback until the group converges.
 
