@@ -126,7 +126,15 @@ export default function Home() {
             covering Identity, Structure, and Protocols.
           </p>
           <p className="mt-4 text-sm text-stone-400">
-            By OpenCivics Labs
+            Built by{" "}
+            <a
+              href="https://github.com/omniharmonic"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-stone-500 hover:text-stone-700 underline underline-offset-2"
+            >
+              omniharmonic
+            </a>
           </p>
         </div>
       </section>
